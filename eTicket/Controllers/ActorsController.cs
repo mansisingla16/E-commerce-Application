@@ -1,16 +1,13 @@
 ﻿using eTicket.Data;
 using eTicket.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace eTicket.Controllers
 {
-    [Route("api/User/[controller]")]
+    [Route("api/user/[controller]")]
     [ApiController]
     public class ActorsController : ControllerBase
     {
@@ -32,7 +29,7 @@ namespace eTicket.Controllers
         }
 
         [HttpPost]
-        public Actor Post(Actor a)
+        public Actor PostActor(Actor a)
         {
             _db.Actors.Add(a);
             _db.SaveChanges();
