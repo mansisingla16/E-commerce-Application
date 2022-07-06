@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace eTicket.Controllers
 {
-   
     [Route("api")]
     [ApiController]
     public class ProducerController : ControllerBase
@@ -23,7 +22,6 @@ namespace eTicket.Controllers
         }
         
         [HttpGet]
-        [Authorize(Roles = UserRoles.Admin)]
         [Route("Public/[controller]")]
         public IEnumerable<Producer> GetProducers()
         {
@@ -36,7 +34,8 @@ namespace eTicket.Controllers
         {
             return _db.Producers.FirstOrDefault(x => x.Id == Id);
         }
-       
+        [Authorize]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [Route("Admin/[controller]")]
         public Producer PostProducer(Producer a)
