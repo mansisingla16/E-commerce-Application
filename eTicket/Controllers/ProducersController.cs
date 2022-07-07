@@ -9,26 +9,27 @@ using System.Threading.Tasks;
 
 namespace eTicket.Controllers
 {
-    [Route("api/User/[controller]")]
+    [Route("api/user/[controller]")]
     [ApiController]
-    public class ActorsController : ControllerBase
+    public class ProducersController : ControllerBase
     {
         private readonly AppDbContext _db;
-        public ActorsController(AppDbContext db)
+        public ProducersController(AppDbContext db)
         {
             _db = db;
         }
-        //Get the records from API
+
         [HttpGet]
-        public IEnumerable<Actor> GetActor()
+        public IEnumerable<Producer> GetProducers()
         {
-            return _db.Actors.ToList();
-        }
-        [HttpGet("{id}")]
-        public Actor GetbyId(int Id)
-        {
-            return _db.Actors.FirstOrDefault(x => x.Id == Id);
+            return (_db.Producers.ToList());
         }
 
+        [HttpGet("{id}")]
+
+        public Producer GetbyId(int Id)
+        {
+            return _db.Producers.FirstOrDefault(x => x.Id == Id);
+        }
     }
 }

@@ -30,6 +30,18 @@ namespace eTicket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Myapp API",
+                    Version = "V1",
+                    Description = "API for showing Data"
+                });
+            });
+            //Enable CORS
+            services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); });
+
             services.AddControllersWithViews();
             services.AddDbContext<AppDbContext>(a=>a.UseSqlServer(Configuration.GetConnectionString("con")));
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -73,7 +85,12 @@ namespace eTicket
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseStaticFiles();
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/V1/swagger.json", "Customer API V");
+                c.RoutePrefix = string.Empty;
+            });
             app.UseRouting();
 
             app.UseAuthorization();
