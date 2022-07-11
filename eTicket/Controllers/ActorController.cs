@@ -24,7 +24,7 @@ namespace eTicket.Controllers
         {
             return _db.Actors.ToList();
         }
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public Actor GetbyId(int Id)
         {
             return _db.Actors.FirstOrDefault(x => x.Id == Id);
@@ -37,7 +37,7 @@ namespace eTicket.Controllers
             _db.SaveChanges();
             return _db.Actors.FirstOrDefault(x => x.Id == a.Id);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public Actor Delete(int Id)
         {
             var a = _db.Actors.Find(Id);
@@ -46,8 +46,8 @@ namespace eTicket.Controllers
             return a;
         }
 
-        [HttpPut("{id}")]
-        public Actor Put(int id, Actor a)
+        [HttpPut("{Id}")]
+        public Actor Put(int Id, Actor a)
         {
             _db.Entry(a).State = EntityState.Modified;
             _db.SaveChanges();

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace eTicket.Controllers
 {
-    //[Authorize(Roles=UserRoles.Admin)]
+    [Authorize(Roles=UserRoles.Admin)]
     //[Authorize]
     [Route("api/admin/[controller]")]
     [ApiController]
@@ -29,7 +29,7 @@ namespace eTicket.Controllers
             return (_db.Producers.ToList());
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
        
         public Producer GetbyId(int Id)
         {
@@ -44,7 +44,7 @@ namespace eTicket.Controllers
             return _db.Producers.FirstOrDefault(x => x.Id == a.Id);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{Id}")]
         public Producer Delete(int Id)
         {
             var a = _db.Producers.Find(Id);
@@ -53,8 +53,8 @@ namespace eTicket.Controllers
             return a;
         }
 
-        [HttpPut("{id}")]
-        public Producer Put(int id, Producer a)
+        [HttpPut("{Id}")]
+        public Producer Put(int Id, Producer a)
         {
             _db.Entry(a).State = EntityState.Modified;
             _db.SaveChanges();

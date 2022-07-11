@@ -25,7 +25,7 @@ namespace eTicket.Controllers
             return (_db.Producers.ToList());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
 
         public Producer GetbyId(int Id)
         {

@@ -24,7 +24,7 @@ namespace eTicket.Controllers
         {
             return _db.Actors.ToList();
         }
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public Actor GetbyId(int Id)
         {
             return _db.Actors.FirstOrDefault(x => x.Id == Id);
