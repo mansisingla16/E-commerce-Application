@@ -1,4 +1,5 @@
 using eTicket.Data;
+using eTickets.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,7 +27,23 @@ namespace eTicket
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<AppDbContext>(a=>a.UseSqlServer(Configuration.GetConnectionString("con")));
+            services.AddDbContext<AppDbContext>(a => a.UseSqlServer(Configuration.GetConnectionString("con")));
+
+            services.AddControllers();
+            services.AddSwaggerGen(s =>
+           services.AddSwaggerGen(c =>
+
+               c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo
+               {
+                   Title = "Myapp API",
+                   Version = "V1",
+                   Description = "API for showing Data"
+
+
+               })));
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +63,18 @@ namespace eTicket
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Customer API V");
+            c.RoutePrefix = string.Empty;
+
+        }
+        );
+
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -55,6 +82,10 @@ namespace eTicket
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            AppDbInitializer.Seed(app);
         }
     }
 }
+
+
+
