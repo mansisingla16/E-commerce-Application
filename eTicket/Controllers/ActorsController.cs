@@ -1,17 +1,17 @@
 ﻿using eTicket.Data;
 using eTicket.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace eTicket.Controllers
 {
-    [Route("api/User/[controller]")]
+   
+   
     [ApiController]
+    [Route("[controller]")]
     public class ActorsController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -21,6 +21,7 @@ namespace eTicket.Controllers
         }
         //Get the records from API
         [HttpGet]
+
         public IEnumerable<Actor> GetActor()
         {
             return _db.Actors.ToList();
@@ -32,7 +33,7 @@ namespace eTicket.Controllers
         }
 
         [HttpPost]
-        public Actor Post(Actor a)
+        public Actor PostActor(Actor a)
         {
             _db.Actors.Add(a);
             _db.SaveChanges();
@@ -54,5 +55,6 @@ namespace eTicket.Controllers
             _db.SaveChanges();
             return a;
         }
+
     }
 }

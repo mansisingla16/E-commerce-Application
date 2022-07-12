@@ -1,14 +1,19 @@
 using eTicket.Data;
+using eTicket.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace eTicket
@@ -27,6 +32,29 @@ namespace eTicket
         {
             services.AddControllersWithViews();
             services.AddDbContext<AppDbContext>(a=>a.UseSqlServer(Configuration.GetConnectionString("con")));
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+            services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+             .AddJwtBearer(a =>
+             {
+                 a.SaveToken = true;
+                 a.RequireHttpsMetadata = false;
+                 a.TokenValidationParameters = new TokenValidationParameters()
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidAudience = Configuration["JWT:ValidAudience"],
+                     ValidIssuer = Configuration["JWT:ValidIssuer"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                 };
+             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,11 +71,13 @@ namespace eTicket
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
@@ -55,6 +85,7 @@ namespace eTicket
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            AppDbIntializer.seed(app);
         }
     }
 }
