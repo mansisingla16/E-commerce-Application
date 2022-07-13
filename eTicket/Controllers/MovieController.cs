@@ -25,9 +25,12 @@ namespace eTicket.Controllers
 
             [HttpGet] //user
 
-            public IEnumerable<Movie> GetMovie()
+            public IEnumerable<Movie> GetMovie(string likeName)
             {
-                return (_db.Movies.ToList());
+            if (string.IsNullOrEmpty(likeName))
+                return _db.Movies.ToList();
+             else
+                return _db.Movies.Where(x => x.Name.Contains(likeName)).ToList();
             }
 
             [HttpGet("{Id}")]

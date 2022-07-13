@@ -23,9 +23,12 @@ namespace eTicket.Controllers
             _db = db;
         }
         [HttpGet]
-        public IEnumerable<Cinema> GetCinema()
+        public IEnumerable<Cinema> GetCinema(string likeName)
         {
-            return (_db.Cinemas.ToList());
+            if (string.IsNullOrEmpty(likeName))
+                return _db.Cinemas.ToList();
+            else
+                return _db.Cinemas.Where(x => x.Name.Contains(likeName)).ToList();
         }
 
         [HttpGet("{Id}")]

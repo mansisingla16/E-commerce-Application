@@ -20,9 +20,12 @@ namespace eTicket.Controllers
         }
         //Get the records from API
         [HttpGet]
-        public IEnumerable<Actor> GetActor()
+        public IEnumerable<Actor> GetActor(string likeName)
         {
-            return _db.Actors.ToList();
+            if (string.IsNullOrEmpty(likeName))
+                return _db.Actors.ToList();
+            else
+            return _db.Actors.Where(x => x.FullName.Contains(likeName)).ToList();
         }
         [HttpGet("{Id}")]
         public Actor GetbyId(int Id)

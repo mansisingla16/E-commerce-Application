@@ -20,9 +20,12 @@ namespace eTicket.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Producer> GetProducers()
+        public IEnumerable<Producer> GetProducers(string likeName)
         {
-            return (_db.Producers.ToList());
+            if (string.IsNullOrEmpty(likeName))
+                return _db.Producers.ToList();
+            else
+                return _db.Producers.Where(x => x.FullName.Contains(likeName)).ToList();
         }
 
         [HttpGet("{Id}")]
