@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace eTicket.Controllers
 {
     [Authorize(Roles=UserRoles.Admin)]
-    //[Authorize]
+    [Authorize]
     [Route("api/admin/[controller]")]
     [ApiController]
     public class ProducerController : ControllerBase

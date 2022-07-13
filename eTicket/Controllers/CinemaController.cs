@@ -4,13 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using eTicket.Data;
 using eTicket.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace eTicket.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize]
+    [Route("api/Admin/[controller]")]
     [ApiController]
     public class CinemaController : ControllerBase
     {

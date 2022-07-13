@@ -54,13 +54,11 @@ namespace eTicket.Controllers
 
             [HttpPut("{Id}")]
 
-            public Movie Put(int id, Movie a)
+            public Movie Put(int Id, Movie a)
             {
                 _db.Entry(a).State = EntityState.Modified;
                 _db.SaveChanges();
                 return a;
             }
-        }
     }
-}
 }

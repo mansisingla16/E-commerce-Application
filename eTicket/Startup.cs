@@ -41,33 +41,37 @@ namespace eTicket
             });
             //Enable CORS
             services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); });
-
+         
             services.AddControllersWithViews();
+            //  configuration of Connection
             services.AddDbContext<AppDbContext>(a=>a.UseSqlServer(Configuration.GetConnectionString("con")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
-            services.AddAuthentication(a =>
-            {
-                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-             .AddJwtBearer(a =>
-             {
-                 a.SaveToken = true;
-                 a.RequireHttpsMetadata = false;
-                 a.TokenValidationParameters = new TokenValidationParameters()
-                 {
-                     ValidateIssuer = true,
-                     ValidateAudience = true,
-                     ValidAudience = Configuration["JWT:ValidAudience"],
-                     ValidIssuer = Configuration["JWT:ValidIssuer"],
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
-                 };
-             });
 
-        }
+            //JWt token Enabling
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+             .AddEntityFrameworkStores<AppDbContext>()
+             .AddDefaultTokenProviders();
+         services.AddAuthentication(a =>
+         {
+             a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+             a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+             a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+         })
+                //adding jwt bearer
+          .AddJwtBearer(a =>
+          {
+              a.SaveToken = true;
+              a.RequireHttpsMetadata = false;
+              a.TokenValidationParameters = new TokenValidationParameters()
+              {
+                  ValidateIssuer = true,
+                  ValidateAudience = true,
+                  ValidAudience = Configuration["JWT:ValidAudience"],
+                  ValidIssuer = Configuration["JWT:ValidIssuer"],
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+              };
+          });
+
+    }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eTicket.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/User/[controller]")]
     [ApiController]
     public class CinemasController : ControllerBase
     {

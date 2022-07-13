@@ -1,5 +1,6 @@
 ﻿using eTicket.Data;
 using eTicket.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -7,8 +8,8 @@ using System.Linq;
 
 namespace eTicket.Controllers
 {
-    //[Authorize(Roles=UserRoles.Admin)]
-    //[Authorize]
+    [Authorize(Roles=UserRoles.Admin)]
+    [Authorize]
     [Route("api/Admin/[controller]")]
     [ApiController]
     public class ActorController : ControllerBase

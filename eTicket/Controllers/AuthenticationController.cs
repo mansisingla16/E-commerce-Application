@@ -21,11 +21,13 @@ namespace eTicket.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
+        
         public AuthenticationController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             _configuration = configuration;
+            
         }
         [HttpPost]
         [Route("Register")]
@@ -48,7 +50,7 @@ namespace eTicket.Controllers
             return Ok(new Response { Status = "Success", Message = "User Added Successfully" });
         }
         [HttpPost]
-        [Route("Login")]
+       [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
@@ -101,12 +103,13 @@ namespace eTicket.Controllers
                 await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
             if (!await roleManager.RoleExistsAsync(UserRoles.User))
                 await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-            if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+            if (await roleManager.RoleExistsAsync(UserRoles.Admin))
             {
                 await userManager.AddToRoleAsync(user, UserRoles.Admin);
             }
             return Ok(new Response { Status = "Success", Message = "User Added Successfully" });
         }
+       
     }
 }
 
