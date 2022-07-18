@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -29,11 +30,15 @@ namespace eTicket.Controllers
             _configuration = configuration;
             
         }
+        
+
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
+            
             var userExist = await userManager.FindByNameAsync(model.UserName);
+            
             if (userExist != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Already Exist" });
             ApplicationUser user = new ApplicationUser()
@@ -43,6 +48,7 @@ namespace eTicket.Controllers
                 UserName = model.UserName
             };
             var result = await userManager.CreateAsync(user, model.Password);
+            
             if (!result.Succeeded)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Creation Failed" });
@@ -74,10 +80,15 @@ namespace eTicket.Controllers
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                     );
+                
                 return Ok(new
                 {
+                    
+                    User_Name= user.UserName,
+                    User_Type= userRoles,
                     token = new JwtSecurityTokenHandler().WriteToken(token)
-                });
+                                    
+                }) ;
             }
             return Unauthorized();
         }
@@ -85,7 +96,9 @@ namespace eTicket.Controllers
         [Route("RegisterAdmin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
         {
+           
             var userExist = await userManager.FindByNameAsync(model.UserName);
+           
             if (userExist != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Already Exist" });
             ApplicationUser user = new ApplicationUser()
@@ -95,6 +108,7 @@ namespace eTicket.Controllers
                 UserName = model.UserName
             };
             var result = await userManager.CreateAsync(user, model.Password);
+            
             if (!result.Succeeded)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Creation Failed" });
@@ -107,6 +121,7 @@ namespace eTicket.Controllers
             {
                 await userManager.AddToRoleAsync(user, UserRoles.Admin);
             }
+            
             return Ok(new Response { Status = "Success", Message = "User Added Successfully" });
         }
        

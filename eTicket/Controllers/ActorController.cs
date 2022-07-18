@@ -25,8 +25,11 @@ namespace eTicket.Controllers
         {
             if (string.IsNullOrEmpty(likeName))
                 return _db.Actors.ToList();
-            else
+            else 
+                //return _db.Actors.Where(x => x.FullName.Count(1).Contains(likeName));
+                //return _db.Actors.Where(x => x.FullName.Contains(likeName)).FirstOrDefault(x);
                 return _db.Actors.Where(x => x.FullName.Contains(likeName)).ToList();
+                // return _db.Actors.FirstOrDefault(x=>x.FullName==likeName).Where(x => x.FullName.Contains(likeName)).ToList();
         }
         [HttpGet("{Id}")]
         public Actor GetbyId(int Id)

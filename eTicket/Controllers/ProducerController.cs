@@ -21,8 +21,7 @@ namespace eTicket.Controllers
         public ProducerController( AppDbContext db)
         {
             _db = db;
-        }
-        
+        }        
         [HttpGet]       
         public IEnumerable<Producer> GetProducers(string likeName)
         {
@@ -32,8 +31,7 @@ namespace eTicket.Controllers
                 return _db.Producers.Where(x => x.FullName.Contains(likeName)).ToList();
         }
         
-        [HttpGet("{Id}")]
-       
+        [HttpGet("{Id}")]       
         public Producer GetbyId(int Id)
         {
             return _db.Producers.FirstOrDefault(x => x.Id == Id);

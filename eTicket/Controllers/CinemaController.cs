@@ -32,7 +32,7 @@ namespace eTicket.Controllers
         }
 
         [HttpGet("{Id}")]
-        public Cinema GtbyId(int Id)
+        public Cinema GetbyId(int Id)
         {
             return _db.Cinemas.FirstOrDefault(x => x.Id == Id);
         }
