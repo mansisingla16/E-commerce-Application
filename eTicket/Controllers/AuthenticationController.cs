@@ -17,13 +17,13 @@ namespace eTicket.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class authenticationcontroller : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
         
-        public AuthenticationController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public authenticationcontroller(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -33,7 +33,7 @@ namespace eTicket.Controllers
         
 
         [HttpPost]
-        [Route("Register")]
+        [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             
@@ -56,7 +56,7 @@ namespace eTicket.Controllers
             return Ok(new Response { Status = "Success", Message = "User Added Successfully" });
         }
         [HttpPost]
-       [Route("Login")]
+       [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
@@ -93,7 +93,7 @@ namespace eTicket.Controllers
             return Unauthorized();
         }
         [HttpPost]
-        [Route("RegisterAdmin")]
+        [Route("register_admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
         {
            

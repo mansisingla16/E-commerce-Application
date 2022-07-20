@@ -11,10 +11,10 @@ namespace eTicket.Controllers
 {
     [Route("api/user/[controller]")]
     [ApiController]
-    public class ProducersController : ControllerBase
+    public class producerscontroller : ControllerBase
     {
         private readonly AppDbContext _db;
-        public ProducersController(AppDbContext db)
+        public producerscontroller(AppDbContext db)
         {
             _db = db;
         }

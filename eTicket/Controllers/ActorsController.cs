@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace eTicket.Controllers
 {
-    [Route("api/User/[controller]")]
+    [Route("api/user/[controller]")]
     [ApiController]
-    public class ActorsController : ControllerBase
+    public class actorscontroller : ControllerBase
     {
         private readonly AppDbContext _db;
-        public ActorsController(AppDbContext db)
+        public actorscontroller(AppDbContext db)
         {
             _db = db;
         }

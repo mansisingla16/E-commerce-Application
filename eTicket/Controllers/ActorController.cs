@@ -10,12 +10,12 @@ namespace eTicket.Controllers
 {
     [Authorize(Roles=UserRoles.Admin)]
     [Authorize]
-    [Route("api/Admin/[controller]")]
+    [Route("api/admin/[controller]")]
     [ApiController]
-    public class ActorController : ControllerBase
+    public class actorcontroller : ControllerBase
     {
         private readonly AppDbContext _db;
-        public ActorController(AppDbContext db)
+        public actorcontroller(AppDbContext db)
         {
             _db = db;
         }

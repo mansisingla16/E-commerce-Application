@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eTicket.Controllers
 {
-    [Route("api/User/[controller]")]
+    [Route("api/user/[controller]")]
     [ApiController]
-    public class CinemasController : ControllerBase
+    public class cinemascontroller : ControllerBase
     {
         private readonly AppDbContext _db;
-        public CinemasController(AppDbContext db)
+        public cinemascontroller(AppDbContext db)
         {
             _db = db;
         }

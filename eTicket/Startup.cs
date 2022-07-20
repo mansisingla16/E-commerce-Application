@@ -110,6 +110,7 @@ namespace eTicket
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            AppDbIntializer.seed(app);
         }
     }
 }
