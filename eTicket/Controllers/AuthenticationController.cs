@@ -27,14 +27,12 @@ namespace eTicket.Controllers
             this.roleManager = roleManager;
             _configuration = configuration;
             
-        }
-        
+        }        
 
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            
             var userExist = await userManager.FindByNameAsync(model.UserName);
             
             if (userExist != null)
@@ -59,15 +57,15 @@ namespace eTicket.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "User Added Successfully" });
         }
-        [HttpPost]
+
+       [HttpPost]
        [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
-                var userRoles = await userManager.GetRolesAsync(user);
-                
+                var userRoles = await userManager.GetRolesAsync(user);                              
                 var authClaims = new List<Claim>
                 {
                    new Claim(ClaimTypes.Name,user.UserName),
@@ -87,13 +85,11 @@ namespace eTicket.Controllers
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                     );
                 
-                return Ok(new
-                {
-                    
+                 return Ok(new
+                {                    
                     User_Name= user.UserName,
                     User_Type= userRoles,
-                    token = new JwtSecurityTokenHandler().WriteToken(token)
-                                    
+                    token = new JwtSecurityTokenHandler().WriteToken(token)                                    
                 }) ;
             }
             return Unauthorized();
@@ -101,10 +97,8 @@ namespace eTicket.Controllers
         [HttpPost]
         [Route("RegisterAdmin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
-        {
-           
-            var userExist = await userManager.FindByNameAsync(model.UserName);
-           
+        {           
+            var userExist = await userManager.FindByNameAsync(model.UserName);           
             if (userExist != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Already Exist" });
             ApplicationUser user = new ApplicationUser()
@@ -126,11 +120,8 @@ namespace eTicket.Controllers
             if (await roleManager.RoleExistsAsync(UserRoles.Admin))
             {
                 await userManager.AddToRoleAsync(user, UserRoles.Admin);
-            }
-            
+            }            
             return Ok(new Response { Status = "Success", Message = "User Added Successfully" });
-        }
-       
+        }       
     }
 }
-
