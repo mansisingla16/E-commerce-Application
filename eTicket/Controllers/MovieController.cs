@@ -23,8 +23,7 @@ namespace eTicket.Controllers
                 _db = db;
             }
 
-            [HttpGet] //user
-
+            [HttpGet] 
             public IEnumerable<Movie> GetMovie(string likeName)
             {
             if (string.IsNullOrEmpty(likeName))
@@ -39,17 +38,16 @@ namespace eTicket.Controllers
             {
                 return _db.Movies.FirstOrDefault(x => x.Id == Id);
             }
-
-            [HttpPost] //admin
-
+        
+             [HttpPost] //admin
             public Movie Post(Movie a)
             {
                 _db.Movies.Add(a);
                 _db.SaveChanges();
                 return _db.Movies.FirstOrDefault(x => x.Id == a.Id);
             }
-            [HttpDelete("{Id}")]
 
+            [HttpDelete("{Id}")]
             public Movie Delete(int Id)
             {
                 var a = _db.Movies.Find(Id);
@@ -59,7 +57,6 @@ namespace eTicket.Controllers
             }
 
             [HttpPut("{Id}")]
-
             public Movie Put(int Id, Movie a)
             {
                 _db.Entry(a).State = EntityState.Modified;

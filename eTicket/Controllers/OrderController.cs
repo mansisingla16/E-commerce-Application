@@ -11,18 +11,19 @@ namespace eTicket.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class bookingController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private readonly AppDbContext _db;
-        public bookingController(AppDbContext db)
+        public OrderController(AppDbContext db)
         {
             _db = db;
         }
-        [HttpGet]
-        public IEnumerable<Actor_Movie> GetActor_Movies()
+        [HttpPost]
+        public Order PostOrder(Order a)
         {
-            return _db.Actor_Movies.ToList();
+            _db.Orders.Add(a);
+            _db.SaveChanges();
+            return _db.Orders.FirstOrDefault(x => x.Order_Id == a.Order_Id);
         }
-
     }
 }

@@ -223,7 +223,17 @@ namespace eTicket.Data
                         new Actor_Movie()
                         {
                             ActorId = 1,
-                            MovieId = 2
+                            MovieId = 1
+                        },
+                        new Actor_Movie()
+                        {
+                            ActorId = 4,
+                            MovieId = 1
+                        },
+                        new Actor_Movie()
+                        {
+                            ActorId = 5,
+                            MovieId = 1
                         },
                         new Actor_Movie()
                         {
@@ -234,7 +244,7 @@ namespace eTicket.Data
                          new Actor_Movie()
                         {
                             ActorId = 1,
-                            MovieId = 4
+                            MovieId = 2
                         },
                          new Actor_Movie()
                         {
