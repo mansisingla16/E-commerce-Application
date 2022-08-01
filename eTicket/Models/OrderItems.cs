@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace eTicket.Models
 {
-    public class OrderItem
+    public class OrderItems
     {
         [Key]
         public int Id { get; set; }
@@ -18,6 +18,7 @@ namespace eTicket.Models
         public int MovieId { get; set; }
         [ForeignKey("MovieId")]
         public Movie Movie { get; set; }
+
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
         public Order Order { get; set; }

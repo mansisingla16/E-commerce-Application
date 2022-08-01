@@ -31,7 +31,7 @@ namespace eTicket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
- 
+            //adding swagger services for documentation of API's 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -40,6 +40,7 @@ namespace eTicket
                     Version = "V1",
                     Description = "API for showing Data"
                 });
+                // added  column for inserting token to get authorizarion 
                 c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
                     In=ParameterLocation.Header,
@@ -79,7 +80,7 @@ namespace eTicket
              a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
              a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
          })
-                //adding jwt bearer
+           //adding jwt bearer
           .AddJwtBearer(a =>
           {
               a.SaveToken = true;
@@ -117,6 +118,7 @@ namespace eTicket
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseStaticFiles();
+            //swagger implemented
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -131,6 +133,7 @@ namespace eTicket
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            //AppDbIntializer.seed(app);
         }
     }
 }
