@@ -18,16 +18,20 @@ namespace eTicket.Controllers
         {
             _db = db;
         }
-        /*[HttpGet("{Id}")]
-        public List<Actor_Movie> GetMovieListByActorId(int Id)
-        {
-            return _db.Actor_Movies.Where(x => x.ActorId == Id).ToList();
-        }*/
-
+        
         [HttpGet("{Id}")]
-        public List<Actor_Movie> GetActorListByMovieId(int Id)
-        {
-            return _db.Actor_Movies.Where(x => x.MovieId == Id).ToList();
+        public List<Actor> GetActorListByMovieId(int Id)
+        {        
+            var actormovie = _db.Actor_Movies.Where(x => x.MovieId == Id).ToList();
+            List<Actor> actorsList = new List<Actor>();
+            foreach (var item in actormovie)
+            {
+                var actor = _db.Actors.FirstOrDefault(x => x.Id == item.ActorId);
+                actorsList.Add(actor);          
+
+            }
+            return actorsList;
+                       
         }
     }
 }

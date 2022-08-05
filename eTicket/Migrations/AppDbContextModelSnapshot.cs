@@ -150,22 +150,7 @@ namespace eTicket.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("eTicket.Models.Actor_Movie", b =>
-                {
-                    b.Property<int>("ActorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ActorId", "MovieId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("Actor_Movies");
-                });
-
-            modelBuilder.Entity("eTicket.Models.Actors", b =>
+            modelBuilder.Entity("eTicket.Models.Actor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -184,6 +169,21 @@ namespace eTicket.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actors");
+                });
+
+            modelBuilder.Entity("eTicket.Models.Actor_Movie", b =>
+                {
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActorId", "MovieId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Actor_Movies");
                 });
 
             modelBuilder.Entity("eTicket.Models.ApplicationUser", b =>
@@ -416,7 +416,7 @@ namespace eTicket.Migrations
 
             modelBuilder.Entity("eTicket.Models.Actor_Movie", b =>
                 {
-                    b.HasOne("eTicket.Models.Actors", "Actor")
+                    b.HasOne("eTicket.Models.Actor", "Actor")
                         .WithMany("Actor_Movies")
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
