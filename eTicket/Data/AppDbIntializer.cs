@@ -326,7 +326,46 @@ namespace eTicket.Data
                     });
                     context.SaveChanges();
                 }
-                
+                //Seats
+                if (!context.Seats.Any())
+                {
+                    context.Seats.AddRange(new List<Seat>()
+                    {
+                         new Seat()
+                         {
+                            Seats = 10,
+                            CinemaId = 2,
+                         },
+
+                        new Seat()
+                         {
+                             Seats = 10,
+                             CinemaId = 4,
+
+                        },
+                         new Seat()
+                         {
+                             Seats= 10,
+                             CinemaId = 1,
+                        },
+                         new Seat()
+                         
+                        {
+                            Seats= 10,
+                            CinemaId = 5,
+                        },
+
+                        new Seat()
+                         {
+                             Seats = 10,
+                             CinemaId = 3,
+
+                        },
+
+                   });
+                    context.SaveChanges();
+                }
+
             }
         }
     }

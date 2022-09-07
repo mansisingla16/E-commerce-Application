@@ -15,10 +15,10 @@ namespace eTicket.Controllers
     [Authorize]
     [Route("api/admin/[controller]")]
     [ApiController]
-    public class cinemacontroller : ControllerBase
+    public class Cinemacontroller : ControllerBase
     {
         private readonly AppDbContext _db;
-        public cinemacontroller(AppDbContext db)
+        public Cinemacontroller(AppDbContext db)
         {
             _db = db;
         }

@@ -4,24 +4,26 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Sendsms.Service;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Types;
 
 namespace eTicket.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class authenticationcontroller : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public authenticationcontroller(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -30,7 +32,7 @@ namespace eTicket.Controllers
         }
 
         [HttpPost]
-        [Route("Register")]
+        [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             var userExist = await userManager.FindByNameAsync(model.UserName);
@@ -39,11 +41,13 @@ namespace eTicket.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Already Exist" });
             ApplicationUser user = new ApplicationUser()
             {
+                PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.UserName,
 
             };
+
             var result = await userManager.CreateAsync(user, model.Password);
             if (await roleManager.RoleExistsAsync(UserRoles.User))
             {
@@ -56,10 +60,11 @@ namespace eTicket.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Creation Failed" });
             }
             return Ok(new Response { Status = "Success", Message = "User Added Successfully" });
-        }
 
+        }
         [HttpPost]
         [Route("Login")]
+
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
@@ -69,9 +74,10 @@ namespace eTicket.Controllers
                 var authClaims = new List<Claim>
                 {
                    new Claim(ClaimTypes.Name,user.UserName),
+                   new Claim(ClaimTypes.MobilePhone,user.PhoneNumber),
                    new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 };
-
+                // authClaims.Add(new Claim )
                 foreach (var userRole in userRoles)
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
@@ -88,6 +94,7 @@ namespace eTicket.Controllers
                 return Ok(new
                 {
                     User_Name = user.UserName,
+                    Phone_Number = user.PhoneNumber,
                     User_Type = userRoles,
                     token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
@@ -95,7 +102,7 @@ namespace eTicket.Controllers
             return Unauthorized();
         }
         [HttpPost]
-        [Route("RegisterAdmin")]
+        [Route("register_admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
         {
             var userExist = await userManager.FindByNameAsync(model.UserName);

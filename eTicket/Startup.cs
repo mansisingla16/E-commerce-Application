@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Sendsms.Helpers;
+using Sendsms.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,25 +33,27 @@ namespace eTicket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //adding swagger services for documentation of API's 
+            services.AddScoped<ISmsService, SmsService>();
+            services.Configure<TwilioSetting>(Configuration.GetSection("SMsConfig"));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "Myapp API",                   
+                    Title = "Myapp API",
                     Version = "V1",
                     Description = "API for showing Data"
                 });
-                // added  column for inserting token to get authorizarion 
                 c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
-                    In=ParameterLocation.Header,
-                    Description="Please Insert Token",
-                    Name="Authorization",
-                    Type=SecuritySchemeType.Http,
-                    BearerFormat="JWT",
-                    Scheme="bearer"
+                    In = ParameterLocation.Header,
+                    Description = "Please Insert Token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
                 });
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     { new OpenApiSecurityScheme{
@@ -65,39 +69,35 @@ namespace eTicket
             });
             //Enable CORS
             services.AddCors(c => { c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); });
-         
+
             services.AddControllersWithViews();
             //  configuration of Connection
-            services.AddDbContext<AppDbContext>(a=>a.UseSqlServer(Configuration.GetConnectionString("con")));
+            services.AddDbContext<AppDbContext>(a => a.UseSqlServer(Configuration.GetConnectionString("con")));
 
             //JWt token Enabling
             services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<AppDbContext>()
              .AddDefaultTokenProviders();
-         services.AddAuthentication(a =>
-         {
-             a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-             a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-             a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-         })
-           //adding jwt bearer
-          .AddJwtBearer(a =>
-          {
-              a.SaveToken = true;
-              a.RequireHttpsMetadata = false;
-              a.TokenValidationParameters = new TokenValidationParameters()
-              {
-                  ValidateIssuer = true,
-                  ValidateAudience = true,
-                  ValidAudience = Configuration["JWT:ValidAudience"],
-                  ValidIssuer = Configuration["JWT:ValidIssuer"],
-                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
-              };
-          });
-            services.AddControllersWithViews()
-    .AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+            services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+             //adding jwt bearer
+             .AddJwtBearer(a =>
+             {
+                 a.SaveToken = true;
+                 a.RequireHttpsMetadata = false;
+                 a.TokenValidationParameters = new TokenValidationParameters()
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidAudience = Configuration["JWT:ValidAudience"],
+                     ValidIssuer = Configuration["JWT:ValidIssuer"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                 };
+             });
 
         }
 
@@ -122,15 +122,25 @@ namespace eTicket
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseStaticFiles();
-            //swagger implemented
             app.UseSwagger();
+            app.UseRouting();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/V1/swagger.json", "Customer API V");
                 c.RoutePrefix = string.Empty;
             });
+
+
+
+            app.UseEndpoints(endpoints =>
+            {
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
             app.UseRouting();
-            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -138,6 +148,8 @@ namespace eTicket
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             AppDbIntializer.seed(app);
+
+
         }
     }
 }

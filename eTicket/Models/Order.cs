@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
+
+
 namespace eTicket.Models
 {
     public class Order
@@ -18,11 +20,17 @@ namespace eTicket.Models
         public int Quantity { get; set; }
 
 
+
+
         [ForeignKey(nameof(UserId))]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
+
+
         public List<OrderItems> OrderItems { get; set; }
+
+
 
     }
 }
