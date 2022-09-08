@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eTicket.Migrations
 {
-    public partial class init : Migration
+    public partial class init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace eTicket.Migrations
                 name: "Actors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Actor_Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProfilePictureURL = table.Column<string>(nullable: true),
                     FullName = table.Column<string>(nullable: true),
@@ -19,7 +19,7 @@ namespace eTicket.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actors", x => x.Id);
+                    table.PrimaryKey("PK_Actors", x => x.Actor_Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,7 +66,7 @@ namespace eTicket.Migrations
                 name: "Bookings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Booking_Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Cinema_Id = table.Column<int>(nullable: false),
                     SeatNo = table.Column<int>(nullable: false),
@@ -79,14 +79,14 @@ namespace eTicket.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.PrimaryKey("PK_Bookings", x => x.Booking_Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Cinemas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Cinema_Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Logo = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
@@ -94,14 +94,14 @@ namespace eTicket.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cinemas", x => x.Id);
+                    table.PrimaryKey("PK_Cinemas", x => x.Cinema_Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Producers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Producer_Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProfilePictureURL = table.Column<string>(nullable: true),
                     FullName = table.Column<string>(nullable: true),
@@ -109,7 +109,7 @@ namespace eTicket.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Producers", x => x.Id);
+                    table.PrimaryKey("PK_Producers", x => x.Producer_Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -256,19 +256,19 @@ namespace eTicket.Migrations
                 name: "Seats",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Seat_Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CinemaId = table.Column<int>(nullable: false),
                     Seats = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seats", x => x.Id);
+                    table.PrimaryKey("PK_Seats", x => x.Seat_Id);
                     table.ForeignKey(
                         name: "FK_Seats_Cinemas_CinemaId",
                         column: x => x.CinemaId,
                         principalTable: "Cinemas",
-                        principalColumn: "Id",
+                        principalColumn: "Cinema_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -276,7 +276,7 @@ namespace eTicket.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Movie_Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
@@ -285,47 +285,49 @@ namespace eTicket.Migrations
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     MovieCategory = table.Column<int>(nullable: false),
-                    CinemaId = table.Column<int>(nullable: false),
-                    ProducerId = table.Column<int>(nullable: false)
+                    Cinema_Id = table.Column<int>(nullable: false),
+                    Cinema_Id1 = table.Column<int>(nullable: true),
+                    Producer_Id = table.Column<int>(nullable: false),
+                    Producer_Id1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movies", x => x.Id);
+                    table.PrimaryKey("PK_Movies", x => x.Movie_Id);
                     table.ForeignKey(
-                        name: "FK_Movies_Cinemas_CinemaId",
-                        column: x => x.CinemaId,
+                        name: "FK_Movies_Cinemas_Cinema_Id1",
+                        column: x => x.Cinema_Id1,
                         principalTable: "Cinemas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Cinema_Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Movies_Producers_ProducerId",
-                        column: x => x.ProducerId,
+                        name: "FK_Movies_Producers_Producer_Id1",
+                        column: x => x.Producer_Id1,
                         principalTable: "Producers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Producer_Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Actor_Movies",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(nullable: false),
-                    ActorId = table.Column<int>(nullable: false)
+                    Movie_Id = table.Column<int>(nullable: false),
+                    Actor_Id = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actor_Movies", x => new { x.ActorId, x.MovieId });
+                    table.PrimaryKey("PK_Actor_Movies", x => new { x.Actor_Id, x.Movie_Id });
                     table.ForeignKey(
-                        name: "FK_Actor_Movies_Actors_ActorId",
-                        column: x => x.ActorId,
+                        name: "FK_Actor_Movies_Actors_Actor_Id",
+                        column: x => x.Actor_Id,
                         principalTable: "Actors",
-                        principalColumn: "Id",
+                        principalColumn: "Actor_Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Actor_Movies_Movies_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_Actor_Movies_Movies_Movie_Id",
+                        column: x => x.Movie_Id,
                         principalTable: "Movies",
-                        principalColumn: "Id",
+                        principalColumn: "Movie_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -336,30 +338,31 @@ namespace eTicket.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Amount = table.Column<int>(nullable: false),
-                    MovieId = table.Column<int>(nullable: false),
-                    OrderId = table.Column<int>(nullable: false)
+                    Movie_Id = table.Column<int>(nullable: false),
+                    Movie_Id1 = table.Column<int>(nullable: true),
+                    Order_Id = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Movies_MovieId",
-                        column: x => x.MovieId,
+                        name: "FK_OrderItems_Movies_Movie_Id1",
+                        column: x => x.Movie_Id1,
                         principalTable: "Movies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Movie_Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Orders_OrderId",
-                        column: x => x.OrderId,
+                        name: "FK_OrderItems_Orders_Order_Id",
+                        column: x => x.Order_Id,
                         principalTable: "Orders",
                         principalColumn: "Order_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Actor_Movies_MovieId",
+                name: "IX_Actor_Movies_Movie_Id",
                 table: "Actor_Movies",
-                column: "MovieId");
+                column: "Movie_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -401,24 +404,24 @@ namespace eTicket.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_CinemaId",
+                name: "IX_Movies_Cinema_Id1",
                 table: "Movies",
-                column: "CinemaId");
+                column: "Cinema_Id1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_ProducerId",
+                name: "IX_Movies_Producer_Id1",
                 table: "Movies",
-                column: "ProducerId");
+                column: "Producer_Id1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_MovieId",
+                name: "IX_OrderItems_Movie_Id1",
                 table: "OrderItems",
-                column: "MovieId");
+                column: "Movie_Id1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_OrderId",
+                name: "IX_OrderItems_Order_Id",
                 table: "OrderItems",
-                column: "OrderId");
+                column: "Order_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",

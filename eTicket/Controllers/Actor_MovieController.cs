@@ -22,11 +22,11 @@ namespace eTicket.Controllers
         [HttpGet("{Id}")]
         public List<Actor> GetActorListByMovieId(int Id)
         {
-            var actormovie = _db.Actor_Movies.Where(x => x.MovieId == Id).ToList();
+            var actormovie = _db.Actor_Movies.Where(x => x.Movie_Id == Id).ToList();
             List<Actor> actorsList = new List<Actor>();
             foreach (var item in actormovie)
             {
-                var actor = _db.Actors.FirstOrDefault(x => x.Id == item.ActorId);
+                var actor = _db.Actors.FirstOrDefault(x => x.Actor_Id == item.Actor_Id);
                 actorsList.Add(actor);
 
             }

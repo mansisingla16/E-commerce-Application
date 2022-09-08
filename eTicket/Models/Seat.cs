@@ -11,7 +11,7 @@ using System.Threading.Tasks;
         public class Seat
     {
         [Key]
-        public int Id { get; set; }
+        public int Seat_Id { get; set; }
 
         [ForeignKey("CinemaId")]
         public int CinemaId { get; set; }

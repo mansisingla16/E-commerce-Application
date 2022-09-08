@@ -25,7 +25,7 @@ namespace eTicket.Controllers
         {
             _db.Bookings.Add(a); 
             _db.SaveChanges();      
-            return _db.Bookings.FirstOrDefault(x => x.Id == a.Id);       
+            return _db.Bookings.FirstOrDefault(x => x.Booking_Id == a.Booking_Id);       
         }
     }
 }

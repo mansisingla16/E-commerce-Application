@@ -29,7 +29,7 @@ namespace eTicket.Controllers
 
         public Seat GetbyId(int Id) 
         {
-            return _db.Seats.FirstOrDefault(x => x.Id == Id);
+            return _db.Seats.FirstOrDefault(x => x.Seat_Id == Id);
         }
 
         [HttpPost] 
@@ -38,7 +38,7 @@ namespace eTicket.Controllers
              {    
             _db.Seats.Add(a);        
             _db.SaveChanges();      
-            return _db.Seats.FirstOrDefault(x => x.Id == a.Id);       
+            return _db.Seats.FirstOrDefault(x => x.Seat_Id == a.Seat_Id);       
              } 
     }
 }

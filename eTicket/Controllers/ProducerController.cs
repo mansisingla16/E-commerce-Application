@@ -34,7 +34,7 @@ namespace eTicket.Controllers
         [HttpGet("{Id}")]       
         public Producer GetbyId(int Id)
         {
-            return _db.Producers.FirstOrDefault(x => x.Id == Id);
+            return _db.Producers.FirstOrDefault(x => x.Producer_Id == Id);
         }
        
         [HttpPost]
@@ -42,7 +42,7 @@ namespace eTicket.Controllers
         {
             _db.Producers.Add(a);
             _db.SaveChanges();
-            return _db.Producers.FirstOrDefault(x => x.Id == a.Id);
+            return _db.Producers.FirstOrDefault(x => x.Producer_Id == a.Producer_Id);
         }
 
         [HttpDelete("{Id}")]

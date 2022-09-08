@@ -33,7 +33,7 @@ namespace eTicket.Controllers
 
         public Movie GetbyId(int Id)
         {
-            return _db.Movies.FirstOrDefault(x => x.Id == Id);
+            return _db.Movies.FirstOrDefault(x => x.Movie_Id == Id);
         }
     }
 }

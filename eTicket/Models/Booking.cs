@@ -9,7 +9,7 @@ namespace eTicket.Models
     public class Booking
     {
         [Key]
-        public int Id { get; set; }
+        public int Booking_Id { get; set; }
         public int Cinema_Id { get; set; }
         public int SeatNo { get; set; }
         public string Date { get; set; }

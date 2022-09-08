@@ -31,7 +31,7 @@ namespace eTicket.Controllers
         [HttpGet("{Id}")]
         public Actor GetbyId(int Id)
         {
-            return _db.Actors.FirstOrDefault(x => x.Id == Id);
+            return _db.Actors.FirstOrDefault(x => x.Actor_Id == Id);
         }
 
         [HttpPost]
@@ -39,7 +39,7 @@ namespace eTicket.Controllers
         {
             _db.Actors.Add(a);
             _db.SaveChanges();
-            return _db.Actors.FirstOrDefault(x => x.Id == a.Id);
+            return _db.Actors.FirstOrDefault(x => x.Actor_Id == a.Actor_Id);
         }
         [HttpDelete("{Id}")]
         public Actor Delete(int Id)

@@ -34,7 +34,7 @@ namespace eTicket.Controllers
         [HttpGet("{Id}")]
         public Cinema GetbyId(int Id)
         {
-            return _db.Cinemas.FirstOrDefault(x => x.Id == Id);
+            return _db.Cinemas.FirstOrDefault(x => x.Cinema_Id == Id);
         }
 
         [HttpPost]
@@ -43,7 +43,7 @@ namespace eTicket.Controllers
         {
             _db.Cinemas.Add(a);
             _db.SaveChanges();
-            return _db.Cinemas.FirstOrDefault(x => x.Id == a.Id);
+            return _db.Cinemas.FirstOrDefault(x => x.Cinema_Id == a.Cinema_Id);
         }
         [HttpDelete("{Id}")]
 

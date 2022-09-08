@@ -19,11 +19,11 @@ namespace eTicket.Data
         {
             modelBuilder.Entity<Actor_Movie>().HasKey(am => new
             {
-                am.ActorId,
-                am.MovieId
+                am.Actor_Id,
+                am.Movie_Id
             });
-            modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Movie).WithMany(am => am.Actor_Movies).HasForeignKey(m => m.MovieId);
-            modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Actor).WithMany(am => am.Actor_Movies).HasForeignKey(m => m.ActorId);
+            modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Movie).WithMany(am => am.Actor_Movies).HasForeignKey(m => m.Movie_Id);
+            modelBuilder.Entity<Actor_Movie>().HasOne(m => m.Actor).WithMany(am => am.Actor_Movies).HasForeignKey(m => m.Actor_Id);
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Actor> Actors { get; set; }

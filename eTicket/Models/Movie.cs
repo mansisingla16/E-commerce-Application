@@ -11,7 +11,7 @@ namespace eTicket.Models
     public class Movie
     {
         [Key]
-        public int Id { get; set; }
+        public int Movie_Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
@@ -23,13 +23,13 @@ namespace eTicket.Models
         public List<Actor_Movie> Actor_Movies { get; set; }
 
         //cinema
-        [ForeignKey("CinemaId")]
-        public  int CinemaId { get; set; }        
+        [ForeignKey("Cinema_Id")]
+        public  int Cinema_Id { get; set; }        
         public Cinema Cinema { get; set; }
 
         //Producer
-        [ForeignKey("ProducerId")]
-        public int ProducerId { get; set; }
+        [ForeignKey("Producer_Id")]
+        public int Producer_Id { get; set; }
         public Producer Producer { get; set; }
     }
 }

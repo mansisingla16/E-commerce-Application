@@ -32,7 +32,7 @@ namespace eTicket.Controllers
 
         public Producer GetbyId(int Id)
         {
-            return _db.Producers.FirstOrDefault(x => x.Id == Id);
+            return _db.Producers.FirstOrDefault(x => x.Producer_Id == Id);
         }
     }
 }
